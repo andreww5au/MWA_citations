@@ -38,9 +38,6 @@
         };
 
         var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-        google.visualization.events.addListener(chart, 'ready', function () {
-          document.getElementById('png').outerHTML = '<a href="' + chart.getImageURI() + '">Printable version</a>';
-        });
         chart.draw(data, options);
       }
     </script>
