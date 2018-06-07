@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+"http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<!--RAW FILE-->
+<head>
+<META NAME="robots" CONTENT="noarchive">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Personal Library</TITLE>
+<script language="JavaScript" type="text/javascript">
+<!-- Begin
+var Geometry = {};
+if(window.screenLeft === undefined){
+        Geometry.getWindowX = function() { return window.screenLeft; };
+        Geometry.getWindowY = function() { return window.screenTop; };
+}
+else if (window.screenX) {
+    Geometry.getWindowX = function() { return window.screenX; };
+    Geometry.getWindowY = function() { return window.screenY; };
+}
+
+if (window.innerWidth) {
+    Geometry.getViewportWidth = function() { return window.innerWidth; };
+    Geometry.getViewportHeight = function() { return window.innerHeight; };
+    Geometry.getHorizontalScroll = function() { return window.pageXOffset; };
+    Geometry.getVerticalScroll = function() { return window.pageYOffset; };
+}
+else if (document.documentElement && document.documentElement.clientWidth) {
+    Geometry.getViewportWidth =
+        function() { return document.documentElement.clientWidth; };
+    Geometry.getViewportHeight =
+        function() { return document.documentElement.clientHeight; };
+    Geometry.getHorizontalScroll =
+        function() { return document.documentElement.scrollLeft; };
+    Geometry.getVerticalScroll =
+        function() { return document.documentElement.scrollTop; };
+}
+else if (document.body.clientWidth) {
+    Geometry.getViewportWidth =
+        function() { return document.body.clientWidth; };
+    Geometry.getViewportHeight =
+        function() { return document.body.clientHeight; };
+    Geometry.getHorizontalScroll =
+        function() { return document.body.scrollLeft; };
+    Geometry.getVerticalScroll =
+        function() { return document.body.scrollTop; };
+}
+var vers = navigator.appVersion;
+var nvers = vers.substring(0,4);
+var desc;
+var x,y,a;
+var checkflag = "false";
+var isNav = (navigator.appName.indexOf("Netscape") !=-1);
+if(isNav === undefined)
+  isNav = 0;
+function hl(a){
+  if ((isNav) && (nvers<5)) {
+    document.object1.top=a;
+  } else {
+    df = document.getElementById('object1');
+    df.innerHTML="";
+  }
+}
+function handlerMM(e){
+  if (!e) e = window.event;
+  x = (isNav) ? e.pageX : e.clientX + Geometry.getHorizontalScroll();
+  y = (isNav) ? e.pageY : e.clientY + Geometry.getVerticalScroll();
+}
+document.onmousemove = handlerMM;
+// end --> 
+</SCRIPT>
+<script language="JavaScript" type="text/javascript">
+<!-- Begin
+function check(name,field1,field2) {
+  if (checkflag == "false") {
+    field1.checked = true;
+    for (i = 0; i < field1.length; i++) {
+      field1[i].checked = true;
+    }
+    if ( field2 ) {
+      field2.checked = true;
+      for (i = 0; i < field2.length; i++) {
+        field2[i].checked = true;
+      }
+    }
+    checkflag = "true";
+    desc = " Deselect All " + name + " ";
+    return desc;
+  }
+  else {
+    field1.checked = false;
+    for (i = 0; i < field1.length; i++) {
+      field1[i].checked = false;
+    }
+    if ( field2 ) {
+      field2.checked = false;
+      for (i = 0; i < field2.length; i++) {
+        field2[i].checked = false;
+      }
+    }
+    checkflag = "false";
+    desc = "    Select All " + name + "    ";
+    return desc;
+  }
+}
+//  End -->
+</script>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<style type="text/css">
+a:link {color: #0000ff}
+a.oa:link {color: #00a000}
+a:visited {color: #4000a0}
+a.oa:visited {color: #006666}
+a:hover {color: #ff0000}
+a.oa:hover {color: #cc33cc}
+</style>
+</head>
+<body  style="background-color: #ffffff; color: #000000">
+<div align="right" style="font-size:84%;padding-bottom:4px"><a href="http://adsabs.harvard.edu/cgi-bin/nph-manage_account?man_cmd=login&amp;man_url=http://adsabs.harvard.edu/cgi-bin/nph-abs%5fconnect%3flibrary">Sign on</a></div>
+
+<h2>Personal Libraries system in the ADS</h2>
+The ADS has set up a system that allows to to organize articles in
+multiple private libraries.  This is a useful tool for instance for
+collecting bibliographies for articles that you write or for keeping
+track of articles relevant to different study subjects.  The system
+also allows you to attach private notes to individual articles.<p>
+
+The links to the individual private libraries are public links.  This
+means you can give the links to other people so they can look at your
+libraries and see any optional annotation you may have given to them
+However, only you can modify your libraries.<p>
+
+To see an example of a set of private libraries that shows how
+they can be used, follow the link below.  Some of these libraries
+have private notes attached to them.<p>
+<a href="http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?library&amp;libid=3000000001"><span style="font-size:  140%; color: green">Example Personal Libraries</span></a>
