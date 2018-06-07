@@ -15,9 +15,11 @@ $ python ./cites2json.py -v pre-MWA
 $ cat MWA_citations.txt MWA-external_citations.txt pre-MWA_citations.txt > MWA-all_citations.txt
 $ python ./cites2json.py -v MWA-all
 
-# TODO: Figure out what this does that the previous one doesn't
-$ python ./combine_papers.py MWA pre-MWA MWA-external
+# This plots three lines - MWA, MWA-external, pre-MWA
+$ python ./combine_papers.py pre-MWA MWA MWA-external
 
+# Replace the most cited bibcodes with human readable IDs
+$ python replace_bibcodes.py *.json
 
 # Citation plots are hosted on DK's website. TODO: port these to somewhere more public.
 # http://www.gravity.phys.uwm.edu/~kaplan/MWA/citations.html
