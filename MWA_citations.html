@@ -29,13 +29,18 @@
           isHTML: true,
           isStacked: true
         };
+        // Uncomment for log vertical axis (mostly for fun)
+        // options.vAxis.scaleType = 'log'
 
         var urls = ["./MWA.json", "./MWAperyear.json", "./MWA-external.json",
                     "./MWA-externalperyear.json", "./pre-MWA.json", "./pre-MWAperyear.json",
                     "./MWA-all.json", "./MWA-allperyear.json", "./MWA_all_papers.json"]
-        var titles = ["MWA", "MWA per year", "MWA - External", "MWA - External per year",
-                      "pre-MWA", "pre-MWA per year", "MWA - All", "MWA - All per year",
-                      "MWA - All papers"]
+        var titles = ["Collaboration Papers", "Collaboration Papers, per year", "External/Public Data Papers",
+                      "External/Public per year", "pre-MWA Papers", "pre-MWA Papers, per year",
+                      "All Papers", "All Papers, per year", "All Papers, by category"]
+        var vAxisTitles = ['Number of citations', 'Number of citations', 'Number of citations',
+                           'Number of citations', 'Number of citations', 'Number of citations',
+                           'Number of citations', 'Number of citations', 'Number of papers']
         for (var i = 0; i < urls.length; i++) {
           var jsonData = $.ajax({
               url: urls[i],
@@ -43,6 +48,7 @@
               async: false
           }).responseText;
           options.title = titles[i]
+          options.vAxis.title = vAxisTitles[i]
           var data = new google.visualization.DataTable(jsonData);
           var chart = new google.visualization.AreaChart(document.getElementById(i));
           chart.draw(data, options);
