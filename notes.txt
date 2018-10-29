@@ -31,3 +31,6 @@ $ python -m SimpleHTTPServer
 
 # point browser to http://0.0.0.0:8000/MWA_citations.html
 # Change reference in MWA_citations.html to various jsons, refresh, repeat
+
+# Print out cumulative stats
+$ python cumulative_stats.py
