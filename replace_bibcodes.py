@@ -20,7 +20,7 @@ bibcodes = ['2017ApJ...848L..12A', '2013PASA...30....7T', '2016ApJ...826L..13A',
             '2018MNRAS.474..779G', '2018ApJ...856...31T', '2018MNRAS.474.4056M',
             '2017arXiv170703517D', '2017MNRAS.471.3974J', '2009IEEEP..97.1497L',
             '2008ISTSP...2..707M', '2007AJ....133.1505B', '2010PASP..122.1353O',
-            '2007ApJ...665..618B', '2009PASP..121..857W']
+            '2007ApJ...665..618B', '2009PASP..121..857W', '2014PhRvD..89b3002D']
 readable = ["Abbot et al. '17", "Tingay et al. '13", "Abbot et al. '16",
             "Keane et al. '16", "Hurley-Walker et al. '17", "Bowman et al. '13",
             "Offringa et al. '14", "Wayth et al. '15", "Sutinjo et al. '15",
@@ -30,7 +30,7 @@ readable = ["Abbot et al. '17", "Tingay et al. '13", "Abbot et al. '16",
             "Galvin et al. '18", "Tingay et al. '18'", "McKinley et al. '18",
             "Duchesne et al. '17", "Jordan et al. '17", "Lonsdale et al. '09",
             "Mitchell et al. '08", "Bowman et al. '07", "Ord et al. '10",
-            "Bhat et al. '07", "Wayth et al. '09"]
+            "Bhat et al. '07", "Wayth et al. '09", "Dillon et al. '14"]
 
 for f in args.files:
     if args.verbose:
