@@ -34,6 +34,7 @@ def cal_mjd(yr, mn, dy):
 
     return (mjd)
 
+
 parser = OptionParser(usage='Usage: %prog [options] <library>\n')
 parser.add_option('--out', '-o', dest='out', default='.',
                   type='str',
@@ -119,7 +120,7 @@ for library in args:
                         mjd = int(cal_mjd(year, month, 1))
                     else:
                         mjd = int(cal_mjd(year, 1, 1))
-                    if citations.has_key(bibcode):
+                    if bibcode in citations.keys():
                         citations[bibcode].append(mjd)
                     else:
                         citations[bibcode] = [mjd]
