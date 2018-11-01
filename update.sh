@@ -23,4 +23,4 @@ python ./cites2json.py -o $DIR -v MWA-all
 python ./combine_papers.py -o $DIR pre-MWA MWA MWA-external
 
 # Replace the most cited bibcodes with human readable IDs
-python replace_bibcodes.py $DIR/*.json
+python ./replace_bibcodes.py $DIR/*.json
