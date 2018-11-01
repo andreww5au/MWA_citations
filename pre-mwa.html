@@ -32,22 +32,17 @@
         // Uncomment for log vertical axis (mostly for fun)
         // options.vAxis.scaleType = 'log'
 
-        var urls = ["./pre-MWA.json"]
-        var titles = ["pre-MWA Papers"]
-        var vAxisTitles = ['Number of citations']
-        for (var i = 0; i < urls.length; i++) {
-          var jsonData = $.ajax({
-              url: urls[i],
+        var jsonData = $.ajax({
+              url: "./pre-MWA.json",
               dataType:"json",
               async: false
           }).responseText;
-          options.title = titles[i]
-          options.vAxis.title = vAxisTitles[i]
-          var data = new google.visualization.DataTable(jsonData);
-          var chart = new google.visualization.AreaChart(document.getElementById(i));
-          chart.draw(data, options);
+        options.title = "pre-MWA Papers"
+        options.vAxis.title = 'Number of citations'
+        var data = new google.visualization.DataTable(jsonData);
+        var chart = new google.visualization.AreaChart(document.getElementById(0));
+        chart.draw(data, options);
 
-        }
       }
     </script>
 
@@ -55,13 +50,11 @@
   <body>
     <div id="main"></div>
     <script type="text/javascript">
-      for (var i = 0; i < 9; i++){
-        var div = document.createElement("div");
-        div.style.width = "800px";
-        div.style.height = "400px";
-        div.id = i;
-        document.getElementById("main").appendChild(div);
-      }
+      var div = document.createElement("div");
+      div.style.width = "800px";
+      div.style.height = "400px";
+      div.id = 0;
+      document.getElementById("main").appendChild(div);
     </script>
     <div id='png'></div>
   </body>
