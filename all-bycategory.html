@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        $.support.cors = true;
+
+        var options = {
+          hAxis: {slantedText: true, textStyle : {fontSize: 24}},
+          vAxis: {title: 'Number of citations', textStyle : {fontSize: 24},
+                  titleTextStyle : {fontSize: 24}},
+          titleTextStyle: {fontSize: 24},
+          titlePosition: "in",
+          legend : {textStyle: {fontSize: 14}},
+          backgroundColor: {strokeWidth: 0},
+          chartArea: {top: 20, left: 100, width: 500, height:300},
+          areaOpacity: 0.3,
+          isHTML: true,
+          isStacked: true
+        };
+        // Uncomment for log vertical axis (mostly for fun)
+        // options.vAxis.scaleType = 'log'
+
+        var urls = ["./MWA_all_papers.json"]
+        var titles = ["All Papers, by category"]
+        var vAxisTitles = ['Number of papers']
+        for (var i = 0; i < urls.length; i++) {
+          var jsonData = $.ajax({
+              url: urls[i],
+              dataType:"json",
+              async: false
+          }).responseText;
+          options.title = titles[i]
+          options.vAxis.title = vAxisTitles[i]
+          var data = new google.visualization.DataTable(jsonData);
+          var chart = new google.visualization.AreaChart(document.getElementById(i));
+          chart.draw(data, options);
+
+        }
+      }
+    </script>
+
+  </head>
+  <body>
+    <div id="main"></div>
+    <script type="text/javascript">
+      for (var i = 0; i < 9; i++){
+        var div = document.createElement("div");
+        div.style.width = "800px";
+        div.style.height = "400px";
+        div.id = i;
+        document.getElementById("main").appendChild(div);
+      }
+    </script>
+    <div id='png'></div>
+  </body>
+</html>
