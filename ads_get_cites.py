@@ -92,7 +92,10 @@ for library in args:
 
         # get publication date
         url = 'http://adsabs.harvard.edu/abs/%s' % bibcode
-        u = urllib2.urlopen(url)
+        try:
+            u = urllib2.urlopen(url)
+        except urllib2.HTTPError:
+            continue
         lines = u.readlines()
         for line in lines:
             if line.startswith('<tr>') and 'Publication Date' in line:
