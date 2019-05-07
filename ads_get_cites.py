@@ -64,7 +64,6 @@ for library in args:
     lib_id = lib_ids[library]
     # first get the list of paper IDs
     # The ads python API does not yet have libraries implemented, so we use the raw API
-    bibcodes = []
     d = requests.get('https://api.adsabs.harvard.edu/v1/biblib/libraries/'
                      + lib_id, headers={"Authorization": "Bearer " + options.token},
                      params={"rows": 500})
