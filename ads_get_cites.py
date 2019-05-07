@@ -44,8 +44,6 @@ parser.add_option('--out', '-o', dest='out', default='.',
 parser.add_option('--refereed', dest='refereed', default=False,
                   action='store_true',
                   help='Only record refereed citations?')
-parser.add_option('--user', dest='user', default='5a621dc7f1',
-                  help='ADS user library ID [default=%default]')
 parser.add_option('--verbose', '-v', dest='verbose', default=False,
                   action='store_true',
                   help='Increase verbosity of output')
