@@ -9,6 +9,8 @@ import os
 import sys
 from optparse import OptionParser, OptionGroup
 import requests
+import ads
+import json
 
 
 def cal_mjd(yr, mn, dy):
@@ -42,42 +44,28 @@ parser.add_option('--out', '-o', dest='out', default='.',
 parser.add_option('--refereed', dest='refereed', default=False,
                   action='store_true',
                   help='Only record refereed citations?')
-parser.add_option('--user', dest='user', default='5a621dc7f1',
-                  help='ADS user library ID [default=%default]')
 parser.add_option('--verbose', '-v', dest='verbose', default=False,
                   action='store_true',
                   help='Increase verbosity of output')
+parser.add_option('--token', '-t', dest='token',
+                  default='TokenTokenToken',
+                  help='ADS API token [default=%default]')
 (options, args) = parser.parse_args()
 if len(args) == 0:
     print 'Must supply >=1 library names'
 
+lib_ids = {'pre-MWA': 'JYhgdTCNTmKhVcwUq0902A', 'MWA': 'LLDgjqnpQdS1fLMFuZ9h1A',
+           'MWA-external': 'lGK81ZiLRNuDhAgv-23eCw'}
+ads.config.token = options.token
+
 for library in args:
+    lib_id = lib_ids[library]
     # first get the list of paper IDs
-    bibcodes = []
-    values = {'libname': library, 'libid': options.user}
-    d = requests.get('http://adsabs.harvard.edu/cgi-bin/nph-abs_connect/?library',
-                     params=values)
-    lines = d.content.split('\n')
-    # url = "http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?library&libname=%s&libid=%s" % (library,
-    #                                                                                          options.user)
-    # try:
-    #     u = urllib2.urlopen(url)
-    #     lines = u.readlines()
-
-    # except urllib2.HTTPError as e:
-    #     lines=e.readlines()
-    # except:
-    #     print 'Unable to get library info from %s' % url
-    #     sys.exit(1)
-    # lines=[]
-    for line in lines:
-        if line.startswith('<tr>') and 'bibcode' in line:
-            data = line.split('<')
-            bibcodes.append(data[5].split()[3].replace('value="', '').replace('">&nbsp;', ''))
-            print bibcodes[-1]
-
-    # bibcodes=open('bibcodes_MWA.txt').readlines()
-    # bibcodes=open('bibcodes_MWA-external.txt').readlines()
+    # The ads python API does not yet have libraries implemented, so we use the raw API
+    d = requests.get('https://api.adsabs.harvard.edu/v1/biblib/libraries/'
+                     + lib_id, headers={"Authorization": "Bearer " + options.token},
+                     params={"rows": 500})
+    bibcodes = map(str, d.json()['documents'])
     outname = os.path.join(options.out,
                            '%s_citations.txt' % (library))
     if options.verbose:
@@ -91,49 +79,42 @@ for library in args:
         bibcode = bibcode.strip()
 
         # get publication date
-        url = 'http://adsabs.harvard.edu/abs/%s' % bibcode
-        try:
-            u = urllib2.urlopen(url)
-        except:
-            print "Error getting abstract: %s" % url
-            continue
-
-        lines = u.readlines()
-        for line in lines:
-            if line.startswith('<tr>') and 'Publication Date' in line:
-                data = line.split('<')
-                date = data[9].split('>')[1]
-                month, year = map(int, date.split('/'))
-                if month > 0:
-                    mjd_pub = int(cal_mjd(year, month, 1))
-                else:
-                    mjd_pub = int(cal_mjd(year, 1, 1))
-
-        if options.refereed:
-            url = 'http://adsabs.harvard.edu/cgi-bin/nph-ref_query?bibcode=%s&amp;refs=REFCIT&amp;db_key=AST' % bibcode
+        payload = {"bibcode": [bibcode], 'format': '%D'}
+        r = requests.post('https://api.adsabs.harvard.edu/v1/export/custom',
+                          headers={"Authorization": "Bearer " + options.token,
+                                   "Content-type": "application/json"},
+                          data=json.dumps(payload))
+        date = r.json()['export']
+        month, year = map(int, date.split('/'))
+        if month > 0:
+            mjd_pub = int(cal_mjd(year, month, 1))
         else:
-            url = 'http://adsabs.harvard.edu/cgi-bin/nph-ref_query?bibcode=%s&amp;refs=CITATIONS&amp;db_key=AST' % bibcode
-        try:
-            u = urllib2.urlopen(url)
-            lines = u.readlines()
-            for line in lines:
-                if line.startswith('<tr>') and 'bibcode' in line:
-                    data = line.split('<')
-                    date = data[14].split('>')[1]
-                    month, year = map(int, date.split('/'))
-                    if month > 0:
-                        mjd = int(cal_mjd(year, month, 1))
-                    else:
-                        mjd = int(cal_mjd(year, 1, 1))
-                    if bibcode in citations.keys():
-                        citations[bibcode].append(mjd)
-                    else:
-                        citations[bibcode] = [mjd]
+            mjd_pub = int(cal_mjd(year, 1, 1))
+
+        # Get citations
+        fields = ['bibcode', 'pubdate']
+        query = 'citations(bibcode:' + bibcode + ')'
+        if options.refereed:
+            query += ' AND property:refereed'
+        cites = ads.SearchQuery(q=query, fl=fields, rows=2000)
+        citelist = list(cites)
+        for cite in citelist:
+            year, month, day = map(int, cite.pubdate.split('-'))
+            if month > 0:
+                mjd = int(cal_mjd(year, month, 1))
+            else:
+                mjd = int(cal_mjd(year, 1, 1))
+            if bibcode in citations.keys():
+                citations[bibcode].append(mjd)
+            else:
+                citations[bibcode] = [mjd]
+
+        if bibcode in citations.keys():
             if options.verbose:
                 print '%d citations for %s' % (len(citations[bibcode]), bibcode)
             f.write('%s [%d]: %s\n' % (bibcode, mjd_pub,
                                        ','.join(map(str, citations[bibcode]))))
-        except urllib2.HTTPError:
+        else:
             citations[bibcode] = []
             if options.verbose:
                 print 'no citations for %s' % bibcode
