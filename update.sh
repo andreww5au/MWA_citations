@@ -8,7 +8,7 @@ DIR=~/mwatelescope.org/citations
 # e.g. 2012rsri.confE..36T [55927]: 57754,57296,56474
 python ./ads_get_cites.py -o $DIR MWA
 python ./ads_get_cites.py -o $DIR MWA-external
-python ./ads_get_cites.py --user=55b946da9a -o $DIR pre-MWA
+python ./ads_get_cites.py -o $DIR pre-MWA
 
 # Converts citations.txt files to json format
 python ./cites2json.py -o $DIR -v MWA
