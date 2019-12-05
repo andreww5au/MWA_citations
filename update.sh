@@ -1,6 +1,8 @@
 #!/bin/sh
 
-DIR=~/test.mwatelescope.org/citations
+DIR=~/mwatelescope.org/citations
+
+source ~/MWA_citations/env/bin/activate
 
 # These lines create the citations.txt files (e.g. MWA_citations.txt)
 # They contain bibcode of each paper in the library, publication date,
