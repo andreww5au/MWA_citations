@@ -54,6 +54,7 @@ parser.add_option('--token', '-t', dest='token',
 if len(args) == 0:
     print 'Must supply >=1 library names'
 
+ntries = 5  # Number of times to try a web query before giving up
 lib_ids = {'pre-MWA': 'JYhgdTCNTmKhVcwUq0902A', 'MWA': 'LLDgjqnpQdS1fLMFuZ9h1A',
            'MWA-external': 'lGK81ZiLRNuDhAgv-23eCw'}
 ads.config.token = options.token
@@ -62,9 +63,17 @@ for library in args:
     lib_id = lib_ids[library]
     # first get the list of paper IDs
     # The ads python API does not yet have libraries implemented, so we use the raw API
+    tries = 0
+    while tries < ntries:
     d = requests.get('https://api.adsabs.harvard.edu/v1/biblib/libraries/'
                      + lib_id, headers={"Authorization": "Bearer " + options.token},
                      params={"rows": 500})
+        if d.status_code == 200:
+            break
+        else:
+            tries += 1
+            if tries >= ntries:
+                raise ValueError('could not get list of bibcodes')
     bibcodes = map(str, d.json()['documents'])
     outname = os.path.join(options.out,
                            '%s_citations.txt' % (library))
@@ -80,10 +89,18 @@ for library in args:
 
         # get publication date
         payload = {"bibcode": [bibcode], 'format': '%D'}
-        r = requests.post('https://api.adsabs.harvard.edu/v1/export/custom',
-                          headers={"Authorization": "Bearer " + options.token,
-                                   "Content-type": "application/json"},
-                          data=json.dumps(payload))
+        tries = 0
+        while tries < ntries:
+            r = requests.post('https://api.adsabs.harvard.edu/v1/export/custom',
+                              headers={"Authorization": "Bearer " + options.token,
+                                       "Content-type": "application/json"},
+                              data=json.dumps(payload))
+            if r.status_code == 200:
+                break
+            else:
+                tries += 1
+                if tries >= ntries:
+                    raise ValueError('could not retrieve bibcode ' + bibcode)
         date = r.json()['export']
         month, year = map(int, date.split('/'))
         if month > 0:
